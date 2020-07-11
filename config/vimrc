@@ -1,0 +1,44 @@
+map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q *
+set tags=tags;
+map <c-\> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
+set autochdir
+
+syntax enable
+syntax on
+if has('gui_running')
+  set background=light
+else
+  set background=dark
+endif
+let g:solarized_termtrans=1
+set hls
+colorscheme solarized
+set guifont=Monospace\ 12
+set fileencodings=ucs-bom,utf-8,cp936
+set fileencoding=utf-8
+set encoding=utf-8
+set nu
+"set lines=35 columns=80
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set autoindent
+set cindent
+
+"enable folding
+set foldmethod=indent
+set foldlevel=99
+nnoremap <space> za
+
+inoremap ( ()<ESC>i
+inoremap [ []<ESC>i
+inoremap { {}<ESC>i
+"inoremap < <><ESC>i
+inoremap " ""<ESC>i
+inoremap ' ''<ESC>i
+
+let mapleader=","
+"autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+""autocmd CursorMovedI * if pumbisible() == 0|pclose|endif
+source ~/vundle_vimrc
