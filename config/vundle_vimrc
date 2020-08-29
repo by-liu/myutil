@@ -28,13 +28,13 @@ Plugin 'VundleVim/Vundle.vim'
 Bundle 'majutsushi/tagbar'
 "nmap <Leader>tb :TagbarToggle<CR>    "快捷键设置
 let g:tagbar_ctags_bin='ctags'   "ctags程序到路径
-let g:tagbar_width=25                   "窗口宽度到设置
+let g:tagbar_width=30                   "窗口宽度到设置
 map <F3> :Tagbar<CR>
 "autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx call tagbar#autoopen()
 
 Bundle 'scrooloose/nerdtree'
 let NERDTreeWinPos='left'
-let NERDTreeWinSize=20
+let NERDTreeWinSize=30
 map <F2> :NERDTreeToggle<CR>
 
 Bundle 'fholgado/minibufexpl.vim'
