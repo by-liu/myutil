@@ -1,4 +1,4 @@
 # myutil
 some personal scripts and config
 
-https://d-05.winudf.com/b/XAPK/Y29tLmdvb2dsZS5hbmRyb2lkLnlvdXR1YmVfMTUxNjYyNTM0NF9jZmI3NTA4OQ?_fn=WW91VHViZV92MTUuNTAuMzVfYXBrcHVyZS5jb20ueGFwaw&_p=Y29tLmdvb2dsZS5hbmRyb2lkLnlvdXR1YmU&am=PjMZ9IuVwgseBpvcSW8IUA&at=1609948389&k=d8f45448cea1fb80584d6aa381943d1f5ff72e66
+https://r-static-assets.androidapks.com/rdata/031794fa3a7ba036c0c8b1ddc353383b/com.google.android.youtube_v15.50.35-1516625344_Android-5.0.apk
