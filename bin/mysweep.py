@@ -4,6 +4,7 @@ import math
 import typing
 import random
 import argparse
+import numpy as np
 
 
 def parse_config(config_path: str) -> dict:
@@ -16,24 +17,50 @@ def get_command(config: typing.Dict,
                 method: str = "grid",
                 number: int = -1,
                 hyphens: bool = True) -> typing.List[str]:
+    runs = [["python {}".format(config["program"])]]
     params = config["parameters"]
     nums = []
     for key in params:
+        arguments = []
         if "value" in params[key]:
-            params[key]["values"] = [params[key]["value"]]
-        elif "min" in params[key] and "max" in params[key]:
-            params[key]["values"] = list(range(params[key]["min"], params[key]["max"] + 1))
-        nums.append(len(params[key]["values"]))
-    total_num = math.prod(nums)
-    cmds = [["python", config["program"]] for _ in range(total_num)]
-    for key in params:
-        num = len(params[key]["values"])
-        for i in range(total_num):
             if hyphens:
-                cmds[i].append("--" + key)
+                arguments.append("--{}={}".format(key, str(params[key]["value"])))
             else:
-                cmds[i].append(key)
-            cmds[i].append(str(params[key]["values"][i % num]))
+                arguments.append("{}={}".format(key, str(params[key]["value"])))
+        elif "values" in params[key]:
+            for val in params[key]["values"]:
+                if hyphens:
+                    arguments.append("--{}={}".format(key, str(val)))
+                else:
+                    arguments.append("{}={}".format(key, str(val)))
+        runs.append(arguments)
+    # grid search
+    arr = [list(range(len(x))) for x in runs]
+    grid = np.meshgrid(*arr)
+    grid = [x.flatten() for x in grid]
+    cmds = []
+    for i in range(grid[0].shape[0]):
+        res = []
+        for j, ind in enumerate(grid):
+            res.append(runs[j][ind[i]])
+        cmds.append(res)
+
+    #for key in params:
+    #    if "value" in params[key]:
+    #        params[key]["values"] = [params[key]["value"]]
+    #    elif "min" in params[key] and "max" in params[key]:
+    #        params[key]["values"] = list(range(params[key]["min"], params[key]["max"] + 1))
+    #    nums.append(len(params[key]["values"]))
+    #total_num = math.prod(nums)
+    #cmds = [["python", config["program"]] for _ in range(total_num)]
+    #for key in params:
+    #    num = len(params[key]["values"])
+    #    for i in range(total_num):
+    #        if hyphens:
+    #            cmds[i].append("--{}={}".format(key, str(params[key]["values"][i % num])))
+    #        else:
+    #            cmds[i].append("{}={}".format(key, str(params[key]["values"][i % num])))
+
     if method == "grid":
         return cmds
     elif method == "random":
@@ -48,7 +75,8 @@ def get_command(config: typing.Dict,
 def save_cmds(cmds, out_path):
     with open(out_path, "w") as f:
         for cmd in cmds:
-            f.write(" ".join(cmd) + "\n")
+            f.write(" ".join(cmd).replace("[", "'[").replace("]", "]'") + "\n")
+    print("write {} commands in {}".format(len(cmds), out_path))
 
 
 def parse_args():
@@ -85,7 +113,6 @@ def main():
         number=args.number,
         hyphens=not args.no_hypens
     )
-    import ipdb; ipdb.set_trace()
 
     if args.max_cmds <= 0:
         save_cmds(cmds, args.out_path)
